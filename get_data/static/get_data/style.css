@@ -1,0 +1,77 @@
+.input_form{
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-around;
+  align-items: center;
+  background-color:  #4CAF50;
+  height: 450px;
+  width: 390px;
+  border-radius: 10px;
+  font-family: 'Lobster Two', cursive;
+}
+input {
+  width: 100%;
+  height: 30px;
+  border-radius: 20px;
+
+}
+
+
+.btn{
+  background-color: khaki;
+  border: white;
+  color: black;
+  text-align: center;
+  font-size: 25px;
+  font-family: 'Lobster Two', cursive;
+  border-radius: 5px;
+  padding: 15px 30px;
+  width: 290px;
+  height: 90px;
+
+}
+
+.btn {
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+}
+
+.btn:hover {
+  background-color: black;
+  color: khaki;
+}
+
+
+.outer_box{
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+
+  justify-content: space-around;
+}
+
+.outer-most{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 50%
+
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-image: url("food.jpg");
+}
+
+.inputtext{
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 60%;
+}

@@ -1,0 +1,18 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'get_data/style.css' %}" />
+<link href="https://fonts.googleapis.com/css?family=Lobster+Two" rel="stylesheet">
+
+<div class="outer-most">
+<form method="post" action="">
+  {% csrf_token %}
+  <div class="outer_box">
+  <div class="input_form">
+    <div class="inputtext">
+      {{ form }}
+      <br />
+    </div>
+  <input type="submit" value="Generate Recipe" class="btn"/>
+  </div>
+  </div>
+</form>
+</div>
