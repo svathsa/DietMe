@@ -15,7 +15,19 @@ input {
   border-radius: 20px;
 
 }
-
+h1{
+  color: black;
+  font-size: 70px;
+}
+.header{
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-around;
+  background-color: khaki;
+  height: 100px;
+  padding: 15px 30px;
+    border-radius: 5px;
+}
 
 .btn{
   background-color: khaki;
@@ -66,6 +78,8 @@ body{
   background-repeat: no-repeat;
   background-size: auto;
   background-image: url("food.jpg");
+  font-size: 22px;
+  font-family: 'Lobster Two', cursive;
 }
 
 .inputtext{
@@ -74,4 +88,10 @@ body{
   flex-direction: column;
   justify-content: space-between;
   height: 60%;
+}
+
+.text{
+  background-color: khaki;
+    padding: 10px 27px;
+  border-radius: 5px;
 }

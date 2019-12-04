@@ -1,7 +1,9 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'get_data/style.css' %}" />
 <link href="https://fonts.googleapis.com/css?family=Lobster+Two" rel="stylesheet">
-
+<div class="header">
+<h1>Diet Me</h1>
+</div>
 <div class="outer-most">
 <form method="post" action="">
   {% csrf_token %}
@@ -15,4 +17,7 @@
   </div>
   </div>
 </form>
+<div class = "text">
+  <p>Enter the amount of Proteins, Carbohydrates, and Fats (in grams) and the number of calories that you want your meal to contain.</p>
+<div>
 </div>

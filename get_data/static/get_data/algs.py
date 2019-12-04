@@ -1,10 +1,23 @@
+import pandas as pd
+from pandas import ExcelWriter
+from pandas import ExcelFile
+import re
+import socket
+
 from bs4 import BeautifulSoup
 import requests
 import os.path
 
 
 
+df = pd.read_excel('ABBREV.xlsx', sheet_name = 'ABBREV')
 
+
+#We obtain an array of urls from the urls.py page
+urls = []
+with open('urls.txt') as f:
+    for line in f:
+        urls.append(line[:-1])
 
 
 #We create an array of the steps involved in the cooking process. Each element in the Array is an array of the words in each step of the url.
@@ -15,7 +28,7 @@ def getUrlIngredients(url):
         ingredients = soup.find_all(class_="ingredient")
         for step in ingredients:
             words = step.decode_contents()
-            words = re.split(',|\s', words)
+            words = re.split(',|\s|-', words)
             ings.append(words)
         return ings
 
@@ -24,9 +37,11 @@ def get_arra_ings_nutrition(df):
     res_arr = []
     for i in df.index:
         string = df['Shrt_Desc'][i]
-        arr = re.split(',|\s', string)
+        arr = re.split(',|\s|-', string)
         res_arr.append( [arr, df['Carbohydrt_(g)'][i], df['Protein_(g)'][i], df['FA_Sat_(g)'][i]])
+
     return res_arr
+
 
 #we write a function to process our step
 def polish_step(step):
@@ -40,7 +55,6 @@ def polish_step(step):
     arra = list(filter(lambda a: a != '', arr))
     return arra
 
-#we write a function to extract the quantity from a step.
 def get_quant_from_step(step):
     quant = 0.0
     for word in step:
@@ -52,25 +66,51 @@ def get_quant_from_step(step):
             break
     return quant
 
+def inarr(word, arr):
+    for eachword in arr:
+        if word==eachword:
+            return True
+    return False
+
+def isvalidIngredient(ingredient):
+    invalidArr = ["babyfood", "juc", "lo", "cnd", "comm", "human", "past", "sugared", "stabilized", "supp", "frz", "var", "inf", "formula", "shortening", "sprd", "industrial", "usda", "oscar", "cereal", "peel", "frz", "cnd", "juice", "canned", "cured", "powder", "pwdr", "prep", "formulated", "snacks", "bar", "formul", "candie", "frankfurter"]
+    for word in ingredient:
+        if inarr(word, invalidArr):
+            return False
+        else:
+            return True
+
+
+
 #we write a function to find the best matching ingredients string and retuen the output the nutritional array for that ingredient
 def getHighestMatchingIngredientsNutrition(df, step):
 
     arr = polish_step(step)
     referernce_arr = get_arra_ings_nutrition(df)
     highest_score = 0
+    len_of_highest_score = 9999999
     highestMatchingNutrition = [0,0,0]
     highestMatchingArray = []
     for ings in referernce_arr:
         score = 0
+      if isvalid(ings[0]):
         for word in ings[0]:
            for wword in arr:
                if wword == word:
                    score+=1
         if score>highest_score:
             highest_score = score
+            len_of_highest_score = len(ings[0])
             highestMatchingNutrition = [ings[1], ings[2], ings[3]]
+            highestMatchingArray = ings
+        elif score == highest_score:
+            if len(ings[0]) < len_of_highest_score:
+                len_of_highest_score = len(ings[0])
+                highest_score = score
+                highestMatchingNutrition = [ings[1], ings[2], ings[3]]
+                highestMatchingArray = ings
 
-    return highestMatchingNutrition
+    return highestMatchingArray
 
 
 
@@ -84,9 +124,9 @@ def get_recipie_nutrition(df, url):
     for step in ingredients:
         quant = get_quant_from_step(step)
         base_nutrition = getHighestMatchingIngredientsNutrition(df, step)
-        carbs += quant*base_nutrition[0]
-        prots += quant*base_nutrition[1]
-        fat += quant*base_nutrition[2]
+        carbs += quant*base_nutrition[1]
+        prots += quant*base_nutrition[2]
+        fat += quant*base_nutrition[3]
     recipie_nutrition = [carbs, prots, fat]
     return recipie_nutrition
 
@@ -110,3 +150,5 @@ def get_min_error_url(user_input_data, nutrition_fax):
             min_error = error[url]
             res_url = url
     return res_url
+
+print(get_nutrition_from_all_urls(df, urls))
